@@ -1,0 +1,127 @@
+html {
+  height: 100%;
+}
+
+body {
+  font: 15px sans-serif;
+  margin: 0;
+  color: black;
+  height: 100%;
+}
+
+.selected {
+  background-color: gray !important;
+}
+
+input[type="number"] {
+  margin: 10px;
+}
+
+.header {
+  background-color: rgb(52, 58, 64);
+  color: white;
+  padding: 1.5%;
+  height: 2%;
+  position: fixed;
+  width: 100%;
+}
+
+#board {
+  width: 85%;
+  height: 90%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-top: 6%;
+  padding-bottom: 1%;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+td {
+  padding: 20px;
+  border: 2px solid black;
+  cursor: pointer;
+}
+
+td:hover {
+  background-color:rgba(128, 128, 128, 0.336);
+}
+
+#menu {
+  /*background: gray;*/
+  border-left: 1px solid black;
+  position: fixed;
+  right: 0;
+  top: 49px;
+  height: 100%;
+  width: 15%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+#menu > div {
+  text-align: center;
+  font-size: 18px;
+}
+
+.button {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  font-size: 13px;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 80px;
+  background-color: rgb(0, 123, 255);
+  color: white;
+  border: none;
+  padding: 11px;
+  text-decoration: none;
+  text-align: center;
+}
+
+.button:hover {
+  background-color: rgb(27, 68, 112);
+}
+
+.line {
+  width: 75%;
+}
+
+.info {
+  font-size: 12px;
+  margin-bottom: 20px;
+}
+
+.obstacle {
+  background-color: red !important;
+}
+
+.start {
+  background-color: green !important;
+}
+
+.end {
+  background-color: black !important;
+}
+
+.coordS, .coordE {
+  margin: 2px;
+}
+
+#calculate {
+  background-color: green !important;
+}
+
+#calculate:hover {
+  background-color: rgb(12, 53, 12) !important;
+}
+
+.alert {
+  color: red;
+}

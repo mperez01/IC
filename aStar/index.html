@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="content-type">
+    <title>Algoritmo A estrella</title>
+    <meta charset="utf8">
+    <link rel="stylesheet" href="css/style.css" media="screen">
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <script src="js/index.js"></script>
+</head>
+
+<body>
+    <div>
+        <div class="header">
+            Algoritmo A*
+        </div>
+        <div id="board">
+            <p class="infoDim"></p>
+            <table>
+
+            </table>
+            <p class="mssg"> </p>
+            <p class="coordS"> </p>
+            <p class="coordE"> </p>
+        </div>
+        <div id="menu">
+            <h3>Opciones</h3>
+            <div>
+                <div>Filas (M)</div>
+                <input type="number" id="row">
+            </div>
+            <div>
+                <div>Columnas (N)</div>
+                <input type="number" id="col">
+            </div>
+            <input type="submit" value="Aplicar" class="button" id="apply">
+            <hr class="line">
+            <div>
+                <p class="info">Pulsa para habilitar la opción deseada</p>
+            </div>
+            <a href="#" id="start" class="button">Marcar inicio</a>
+            <a href="#" id="end" class="button">Marcar destino</a>
+            <a href="#" id="obs" class="button">Pintar obstáculos</a>
+            <hr class="line">
+            <a href="#" id="calculate" class="button">Inicar</a>
+        </div>
+    </div>
+
+</body>
+
+</html>
