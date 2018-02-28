@@ -42,7 +42,7 @@ table {
 }
 
 td {
-  padding: 20px;
+  /*padding: 20px;*/
   border: 2px solid black;
   cursor: pointer;
 }
@@ -56,7 +56,7 @@ td:hover {
   border-left: 1px solid black;
   position: fixed;
   right: 0;
-  top: 49px;
+  top: 7.9%;
   height: 100%;
   width: 15%;
   display: flex;

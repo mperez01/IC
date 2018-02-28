@@ -49,20 +49,56 @@ function aStar() {
     if (startCoord !== null && endCoord !== null) {
         var start = startCoord.split(" ");
         var end = endCoord.split(" ");
+        //Getting the board matrix
+        var matrix = getMatrix();
+        console.log(matrix);
     } else {
         alert("Falta inicio o destino");
     }
+}
+
+/** 
+ * Get the board cells class to create the matrix as array
+*/
+function getMatrix() {
+    let numRows = $("tr").length
+    let numColumns = ($($("tr")[0]).children("td").length)
+    let matrix = [];
+
+    for (var i = 0; i < numRows; i++) {
+        matrix[i] = [];
+        for (var j = 0; j < numColumns; j++) {
+            if ($($($("tr")[i]).children("td")[j]).hasClass("start")) {
+                matrix[i][j] = "start"
+            } else if ($($($("tr")[i]).children("td")[j]).hasClass("end")) {
+                matrix[i][j] = "end"
+            } else if ($($($("tr")[i]).children("td")[j]).hasClass("obstacle")) {
+                matrix[i][j] = "obstacle"
+            } else {
+                matrix[i][j] = "free"
+            }
+        }
+    }
+    return matrix;
 }
 
 function clickBoard(event) {
     let selected = $(event.target);
     $(".mssg").text("_");
     $(".mssg").removeClass("alert");
+    /*** To give style and replace R(row) to F(fila) ***/
+    var c = String(selected.attr('class')).toUpperCase();
+    c = c.replace("R", "F");
+    /**************************************************/
     if ($('#start').hasClass('selected')) {
         if (startCoord === null) {
-            startCoord = selected.attr("class");
-            $(".coordS").text(" Coordenada de inicio " + selected.attr('class'));
-            selected.toggleClass("start");
+            if (selected.hasClass("end")) {
+                mssgAlert();
+            } else {
+                startCoord = selected.attr("class");
+                $(".coordS").text(" Coordenada de inicio " + c.split(' ')[0] + " " + c.split(' ')[1]);
+                selected.toggleClass("start");
+            }
         } else {
             if (selected.hasClass("end")) {
                 mssgAlert();
@@ -70,16 +106,20 @@ function clickBoard(event) {
                 startCoord = selected.attr("class");
                 $("td").removeClass("start");
                 selected.removeClass("obstacle");
-                $(".coordS").text(" Coordenada de inicio " + selected.attr('class'));
+                $(".coordS").text(" Coordenada de inicio " + c.split(' ')[0] + " " + c.split(' ')[1]);
                 selected.toggleClass("start");
             }
         }
     }
     if ($('#end').hasClass('selected')) {
         if (endCoord === null) {
-            endCoord = selected.attr("class");
-            $(".coordE").text(" Coordenada de destino " + selected.attr('class'));
-            selected.toggleClass("end");
+            if (selected.hasClass("start")) {
+                mssgAlert();
+            } else {
+                endCoord = selected.attr("class");
+                $(".coordE").text(" Coordenada de destino " + c.split(' ')[0] + " " + c.split(' ')[1]);
+                selected.toggleClass("end");
+            }
         } else {
             if (selected.hasClass("start")) {
                 mssgAlert();
@@ -87,7 +127,7 @@ function clickBoard(event) {
                 endCoord = selected.attr("class");
                 $("td").removeClass("end");
                 selected.removeClass("obstacle");
-                $(".coordE").text(" Coordenada de destino " + selected.attr('class'));
+                $(".coordE").text(" Coordenada de destino " + c.split(' ')[0] + " " + c.split(' ')[1]);
                 selected.toggleClass("end");
             }
         }
@@ -126,15 +166,17 @@ function createBoard(event) {
         var rows = $("#row").val();
         var columns = $("#col").val();
         /*************************************/
-
-        if (Number(rows) <= 0 || Number(columns) <= 0) {
+        if (Number(rows) * Number(columns) < 6) {
+            alert("Dimensiones muy pequeñas");
+        } else if (Number(rows) <= 0 || Number(columns) <= 0) {
             alert("¡Fila y columna no pueden ser 0 ni negativo!");
         } else if (!Number.isInteger(Number(rows)) || !Number.isInteger(Number(columns))) {
             alert("¡Error al introducir los datos!")
-        } else if (Number(columns) > 25) {
-            /** For me screem dimensions **/
+        } /*else if (Number(columns) > 40) {
+            
             alert("Máximo 25 columnas")
-        } else {
+            } */
+        else {
             /**Put empty the field value */
             $("#row").val("");
             $("#col").val("");
@@ -161,19 +203,27 @@ function board(rows, columns) {
     endCoord = null;
 
     $(".infoDim").text("Tablero de " + rows + " x " + columns);
-    let table = $("table");
-    for (let i = 0; i < rows; i++) {
-        let row = $("<tr></tr>");
+    var table = $("table");
+    for (var i = 0; i < rows; i++) {
+        var row = $("<tr></tr>");
         for (let j = 0; j < columns; j++) {
-            let col = $("<td></td>");
-            /** Adding class to know the cell position 
-             * with attr doesn't work becouse just keep the first **/
-            //col.attr('id', i);
-            //row.attr('id', j);
+            var col = $("<td></td>");
             col.addClass("r" + i);
             col.addClass("c" + j);
             row.append(col);
         }
         table.append(row);
+    }
+    /**
+     * Appropriate to differentes size
+     */
+    if (rows >= 20) {
+        $('td').css({ "padding": "10px" });
+    } else if (rows > 11) {
+        $('td').css({ "padding": "15px" });
+    } else if (rows <= 7) {
+        $('td').css({ "padding": "30px" });
+    } else {
+        $('td').css({ "padding": "20px" });
     }
 }
