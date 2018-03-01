@@ -28,6 +28,7 @@ input[type="number"] {
 
 #board {
   width: 85%;
+  /*width: 100%;*/
   height: 90%;
   display: flex;
   flex-direction: column;
