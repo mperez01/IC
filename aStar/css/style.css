@@ -111,6 +111,10 @@ td:hover {
   background-color: black !important;
 }
 
+.road {
+  background-color: lightskyblue !important;
+}
+
 .coordS, .coordE {
   margin: 2px;
 }
@@ -125,4 +129,11 @@ td:hover {
 
 .alert {
   color: red;
+}
+
+footer {
+  position:fixed;
+  bottom: 0;
+  font-size: 15px;
+  margin: 10px;
 }
