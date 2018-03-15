@@ -112,7 +112,7 @@ td:hover {
 }
 
 .road {
-  background-color: lightskyblue !important;
+  background-color: lightskyblue;
 }
 
 .coordS, .coordE {
