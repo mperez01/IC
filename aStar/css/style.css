@@ -127,6 +127,15 @@ td:hover {
   background-color: rgb(12, 53, 12) !important;
 }
 
+#random {
+  background-color:rgb(211, 47, 47) !important;
+}
+
+#random:hover {
+  background-color:rgb(110, 28, 28) !important;
+}
+
+
 .alert {
   color: red;
 }

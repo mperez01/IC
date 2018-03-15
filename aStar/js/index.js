@@ -139,10 +139,8 @@ function aStar() {
                     var ady = neighbour(matrix, currentNode);
                     for (var i = 0; i < ady.length; i++) {
                         var neig = ady[i];
-                        //var visited = neig.visited;
                         if (!openHeap.includes(neig) && !closeHeap.includes(neig) && neig.status != "start") {
                             neig.parent = currentNode;
-                            //Ordenar lista de menor a mayor
                             neig.h = euclidean(neig, endNodeMatrix);
                             neig.g = Number(calulateG(neig, neig.parent.g));
                             // f(x) = g(x) + h(x)
@@ -152,7 +150,7 @@ function aStar() {
                             var newG = calulateG(neig, neig.parent.g);
                             var newH = euclidean(neig, endNodeMatrix);
                             var newF = newG + newH;
-                            if ( newF < neig.f) {
+                            if (newF < neig.f) {
                                 neig.f = newF;
                                 neig.h = newH;
                                 neig.g = newG;
@@ -313,6 +311,10 @@ function drawObstacle(event) {
             mssgAlert();
         } else {
             selected.toggleClass("obstacle");
+            //If exist a road in the board, recalculate the aStar algorithm
+            if (selected.hasClass("road")) {
+                aStar();
+            }
         }
     }
 }
