@@ -19,18 +19,37 @@ var maxCol = 48;
 var maxRow = 100;
 var IsClickDown;
 
-
-/**
- *  PDF in html5
- *  <iframe src="http://www.aragonemprendedor.com/archivos/descargas/tutorial_googledocs.pdf" 
-        style="width:600px; height:500px;" frameborder="0"></iframe>
- */
-
 $(() => {
 
     defaultBoard();
 
+    $('#information').on("click", (event) => {
+        alert("Ayuda")
+    });
+
+
+    $("#target").keypress(function () {
+        console.log("Handler for .keypress() called.");
+    });
+
     $('#apply').on("click", createBoard);
+
+    /**
+     * With this, can create the board pressing "enter" if
+     * the cursor is in the input "row" or "col"
+     */
+    $("#row").keypress(function (e) {
+        if (e.which == 13) {
+            createBoard();
+        }
+    });
+
+    $("#col").keypress(function (e) {
+        if (e.which == 13) {
+            createBoard();
+        }
+    });
+    /******************************************** */
 
     $('table').on("click", "td", clickBoard);
 

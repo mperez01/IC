@@ -13,6 +13,17 @@ body {
   background-color: gray !important;
 }
 
+.infB {
+  vertical-align: middle;
+  height: 20px;
+  margin-left: 15px;
+}
+
+.infB:hover {
+  cursor: pointer;
+  filter:grayscale(70%);
+}
+
 input[type="number"] {
   margin: 10px;
 }
@@ -70,6 +81,7 @@ td:hover {
   text-align: center;
   font-size: 18px;
 }
+
 
 .button {
   margin-top: 10px;
