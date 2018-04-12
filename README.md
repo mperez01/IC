@@ -3,3 +3,4 @@ Prácticas de la asignatura Ingeniería del Conocimiento de la Universidad Compl
 
 ## Enlaces a los algoritmos
 - [Algoritmo A estrella](https://mperez01.github.io/IC/aStar/index.html)
+- [Árbol de decisión ID3](https://mperez01.github.io/IC/ID3/index.html)
