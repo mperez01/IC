@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="content-type">
+    <title>Árbol de decisión (ID3)</title>
+    <meta charset="utf8">
+    <link rel="stylesheet" href="css/style.css" media="screen">
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <script src="js/index.js"></script>
+</head>
+
+<body>
+    <div>
+        <div class="header">
+            Árbol de decisión (ID3)
+            <a href="#" target="_blank" title='Memoria y guia de uso'>
+                <img class="infB" src="img/info.png" alt="info">
+            </a>
+        </div>
+
+        <div id="board">
+            <table>
+               <tr></tr>
+            </table>
+        </div>
+
+        <div id="menu">
+            <h2>Opciones</h2>
+
+            <h4>Uso por archivo</h4>
+
+            <span>Archivo .txt </span>
+            <span>con los atributos</span>
+            <label class="button" id="bAtr"> Examinar...
+                <input type="file" accept='text/plain' id="atr">
+            </label>
+
+            <span>Archivo .txt </span>
+            <span> con los valores</span>
+            <label class="button" id="bVal"> Examinar...
+                <input type="file" accept='text/plain' id="val">
+            </label>
+
+            <!--
+            <hr class="line">
+            <h4>Uso manual</h4>
+            <span>Número de filas</span>
+            <input type="number" id="rows">
+
+            <span>Número de columnas</span>
+            <input type="number" id="col">
+            -->
+            <hr class="line">
+            <a href="#" id="calculate" class="button">Inicar</a>
+        </div>
+    </div>
+    <div id="result">
+        <div>Resultado:</div>
+    </div>
+    <footer>
+        Marcelino Pérez Durán
+    </footer>
+
+</body>
+
+</html>
