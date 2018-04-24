@@ -82,6 +82,10 @@ td:hover {
   font-size: 18px;
 }
 
+#result > .merito {
+  color: red;
+}
+
 
 .button {
   margin-top: 10px;
