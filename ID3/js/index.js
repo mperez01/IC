@@ -195,4 +195,267 @@ function cleanAll() {
     addValFile = false;
 }
 
-function id3(){$("#result > div").remove(),nameResult=atr[atr.length-1],data=startValues();let e=getID3(data),t=getBranchesFromMin(e,data);tree=setTree(t,e,data);let r=[],n=checkIfRecExists(tree,r);for(r=r.reverse();n;){let e=getID3(n),t=setTree(getBranchesFromMin(e,n),e,n);setATreeBranchInPosition(tree,t,r),r=[],n=checkIfRecExists(tree,r),r=r.reverse()}$("#table").hide(),$("#result").show(),$("#result").append($("<h2/>").text("Mérito de atributos")),getID3(data,!0),$("#result").append($("<h2/>").text("Árbol de decisión")),iterate(tree,"")}function iterate(e,t){for(var r in e)e.hasOwnProperty(r)&&("object"==typeof e[r]?iterate(e[r],t+" -> "+r):$("#result").append($("<div/>").text(t+" -> "+r+" -> "+e[r])))}function getID3(e,t){let r=getP(e),n=getN(r),o=getR(r,n),a={},c=null;return Object.keys(r).forEach(e=>{a[e]=getMerit(o[e],r[e],n[e]),null===c?c=e:a[c]>a[e]&&(c=e),t&&$("#result").append($("<div class='merito'/>").text("Mérito de "+e+" = "+a[e]))}),c}function startValues(){for(var e=[],t=0;t<val.length;t++)e[t]={},atr.forEach((r,n)=>{e[t][r]=val[t][n]});return numberN=e.length,e}function getP(e){let t={};return e.forEach(e=>{Object.keys(e).forEach(r=>{let n=e[r];r!==nameResult&&(t[r]||(t[r]={}),t[r][n]||(t[r][n]={},t[r][n].numerator=0,t[r][n].denominator=0),"si"!==String(e[nameResult]).toLowerCase()&&"sí"!==String(e[nameResult]).toLowerCase()&&"+"!==String(e[nameResult]).toLowerCase()||t[r][n].numerator++,t[r][n].denominator++)})}),t}function getN(e){let t={};return Object.keys(e).forEach(r=>{Object.keys(e[r]).forEach(n=>{t[r]||(t[r]={}),t[r][n]={},t[r][n].numerator=e[r][n].denominator-e[r][n].numerator,t[r][n].denominator=e[r][n].denominator})}),t}function getR(e,t){let r={};return Object.keys(e).forEach(n=>{Object.keys(e[n]).forEach(o=>{r[n]||(r[n]={}),r[n][o]={},r[n][o].numerator=e[n][o].numerator+t[n][o].numerator,r[n][o].denominator=numberN})}),r}function entropia(e,t){return 0===e&&(e=1),0===t&&(t=1),-e*Math.log2(e)-t*Math.log2(t)}function getMerit(e,t,r){let n=0;return Object.keys(e).forEach(o=>{n+=e[o].numerator/e[o].denominator*entropia(t[o].numerator/t[o].denominator,r[o].numerator/r[o].denominator)}),n}function setATreeBranchInPosition(e,t,r){if(r.length>1){setATreeBranchInPosition(e[r.pop()],t,r)}else if(1==r.length){e[r.pop()]=t}}function getBranchesFromMin(e,t){let r={};return t.forEach(t=>{let n=t[nameResult],o=[t[e]];r[o]||(r[o]={}),r[o][n]||(r[o][n]=0,r[o][n]++)}),r}function setTree(e,t,r){let n={};return n[t]={},Object.keys(e).forEach((o,a)=>{let c=Object.keys(e[o]);c.length>1?(n[t][o]={},n[t][o].parsedData=setNewParsedData(t,o,r),n[t][o].rec=!0):n[t][o]=c[0]}),n}function setNewParsedData(e,t,r){let n=[];return r.forEach((r,o)=>{if(r[e]===t){let t=Object.keys(r),o={};t.forEach(t=>{t!==e&&(o[t]=r[t])}),n.push(o)}}),n}function checkIfRecExists(e,t){if("object"!=typeof e)return!1;{let r=Object.keys(e),n=0,o=!1;for(;n<r.length&&!o;){let a=e[r[n]];a.rec?(t.push(r[n]),o=getDataFromObject(a),a.rec=!1):(t.push(r[n]),(o=checkIfRecExists(a,t))||t.pop()),n++}return o}}function getDataFromObject(e){let t=Object.keys(e);return"rec"===t[0]?e[t[1]]:e[t[0]]}function getResultFromData(e){let t,r,n,o=!1,a=tree;for(;!o;)"object"==typeof a&&(1===(n=Object.keys(a)).length?(r=e[t=n[0]],a=a[t]):"object"!=typeof(a=a[t=r])&&(o=!0,r=a));return r}
+function id3() {
+    $("#result > div").remove();
+    $("#result > h2").remove();
+    //nameResult save the name of the last attribute, that is the result
+    nameResult = atr[atr.length - 1];
+    data = startValues();
+
+    let min = getID3(data);
+    let branches = getBranchesFromMin(min, data);
+    tree = setTree(branches, min, data);
+    let position = [];  //almacenamos las claves del arbol para llegar a rec
+    let dat = checkIfRecExists(tree, position);
+    position = position.reverse();
+    while (dat) {
+        let min = getID3(dat);
+        let branches = getBranchesFromMin(min, dat);
+        let treeBranch = setTree(branches, min, dat);
+        setPositionTreeBranch(tree, treeBranch, position)
+        position = [];
+        dat = checkIfRecExists(tree, position);
+        position = position.reverse();
+    }
+
+    $("#table").hide();
+    $("#result").show();
+    $('#result').append($("<h2/>").text("Mérito de atributos"))
+    getID3(data, true);
+    $('#result').append($("<h2/>").text("Árbol de decisión"))
+    iterate(tree, '');
+
+}
+
+function iterate(obj, stack) {
+    for (var property in obj) {
+        if (obj.hasOwnProperty(property)) {
+            if (typeof obj[property] === "object") {
+                iterate(obj[property], stack + ' -> ' + property);
+            } else {
+                $('#result').append($("<div/>").text(stack + ' -> ' + property + " -> " + obj[property]))
+            }
+        }
+    }
+}
+
+function getID3(pData, mostrar) {
+    var p = getPValue(pData);
+    var n = getNValue(p);
+    var r = getRValue(p, n);
+    var merit = {};
+    var min = null;
+    Object.keys(p).forEach(elem => {
+        merit[elem] = getMerit(r[elem], p[elem], n[elem]);
+        if (min === null)
+            min = elem;
+        else if (merit[min] > merit[elem]) {
+            min = elem;
+        }
+        if (mostrar)
+            $('#result').append($("<div class='merito'/>").text("Mérito de " + elem  + " = " +  merit[elem]));
+    });
+    return min;
+}
+
+function startValues() {
+    var data = [];
+    for (var i = 0; i < val.length; i++) {
+        data[i] = {};
+        atr.forEach((element, index) => {
+            data[i][element] = val[i][index];
+        });
+    }
+    numberN = data.length;
+    return data;
+}
+
+function getPValue(data) {
+    var p = {};
+    data.forEach(elem => {
+        Object.keys(elem).forEach(key => {
+            var value = elem[key];
+            if (key !== nameResult) {
+                if (!p[key])
+                    p[key] = {};
+                if (!p[key][value]) {
+                    p[key][value] = {};
+                    p[key][value]["numerator"] = 0;
+                    p[key][value]["denominator"] = 0;
+                }
+                if (String(elem[nameResult]).toLowerCase() === "si" || String(elem[nameResult]).toLowerCase() === "sí"
+                    || String(elem[nameResult]).toLowerCase() === "+")
+                    p[key][value]["numerator"]++;
+                p[key][value]["denominator"]++;
+            }
+        });
+    });
+    return p;
+}
+
+function getNValue(p) {
+    var n = {};
+    Object.keys(p).forEach(elem => {
+        Object.keys(p[elem]).forEach(key => {
+            if (!n[elem])
+                n[elem] = {};
+            n[elem][key] = {};
+            n[elem][key]["numerator"] = p[elem][key]["denominator"] - p[elem][key]["numerator"];
+            n[elem][key]["denominator"] = p[elem][key]["denominator"];
+        });
+    });
+    return n;
+}
+
+function getRValue(p, n) {
+    var r = {};
+    Object.keys(p).forEach(elem => {
+        Object.keys(p[elem]).forEach(key => {
+            if (!r[elem])
+                r[elem] = {};
+            r[elem][key] = {};
+            r[elem][key]["numerator"] = p[elem][key]["numerator"] + n[elem][key]["numerator"];
+            r[elem][key]["denominator"] = numberN;
+        });
+    });
+    return r;
+}
+
+
+function entropia(p, n) {
+    if (p === 0)
+        p = 1;
+    if (n === 0)
+        n = 1;
+    return -p * Math.log2(p) - n * Math.log2(n);
+}
+
+function getMerit(rs, ps, ns) {
+    var result = 0;
+    Object.keys(rs).forEach(key => {
+        result += rs[key]["numerator"] / rs[key]["denominator"] *
+            entropia(ps[key]["numerator"] / ps[key]["denominator"], ns[key]["numerator"] / ns[key]["denominator"])
+    });
+    return result;
+}
+
+function setPositionTreeBranch(treePosition, treeBranch, position) {
+    if (position.length > 1) { 
+        var key = position.pop();
+        setPositionTreeBranch(treePosition[key], treeBranch, position);
+    }
+    else if (position.length == 1) {
+        var key = position.pop();
+        treePosition[key] = treeBranch;
+    }
+}
+
+function getBranchesFromMin(min, parsedData) {
+    var branches = {};
+    parsedData.forEach(data => {
+        var res = data[nameResult];
+        var dat = [data[min]];
+        if (!branches[dat])
+            branches[dat] = {};
+        if (!branches[dat][res]) {
+            branches[dat][res] = 0;
+            branches[dat][res]++;
+        }
+    });
+    return branches;
+}
+
+function setTree(branches, min, parsedData) {
+    var res = {};
+    res[min] = {};
+    var keys = Object.keys(branches);
+    keys.forEach((k, index) => {
+        var result = Object.keys(branches[k]);
+        if (result.length > 1) {
+            res[min][k] = {};
+            res[min][k].parsedData = setNewData(min, k, parsedData);
+            res[min][k].rec = true;
+        }
+        else {
+            res[min][k] = result[0];
+        }
+
+    });
+    return res;
+}
+
+function setNewData(key, value, parsedData) {
+    var result = [];
+    parsedData.forEach((data, index) => {
+        if (data[key] === value) {
+            var dataKeys = Object.keys(data);
+            var pushThis = {};
+            dataKeys.forEach(dataKey => {
+                if (dataKey !== key)
+                    pushThis[dataKey] = data[dataKey];
+            })
+            result.push(pushThis);
+        }
+    });
+    return result;
+}
+
+function checkIfRecExists(object, position) {
+    if (typeof (object) !== "object")
+        return false;
+    else {
+        var keys = Object.keys(object);
+        var i = 0;
+        var found = false;
+        while (i < keys.length && !found) {
+            var item = object[keys[i]];
+            if (item.rec) {
+                position.push(keys[i]);
+                found = getDataObject(item);
+                item.rec = false;
+            }
+            else {
+                position.push(keys[i]);
+                found = checkIfRecExists(item, position);
+                if (!found)
+                    position.pop();
+            }
+            i++;
+        }
+        return found;
+    }
+}
+
+function getDataObject(object) {
+    var keys = Object.keys(object);
+    if (keys[0] === "rec")
+        return object[keys[1]];
+    return object[keys[0]];
+}
+
+function getDataResult(d) {
+    var result = false;
+    var key;
+    var valu;
+    var branch = tree;
+    var treeKeys;
+    while (!result) {
+        if (typeof (branch) === "object") {
+            treeKeys = Object.keys(branch);
+            if (treeKeys.length === 1) {
+                key = treeKeys[0];
+                valu = d[key];
+                branch = branch[key];
+            }
+            else {
+                key = valu;
+                branch = branch[key];
+                if (typeof (branch) !== "object") {
+                    result = true;
+                    valu = branch;
+                }
+            }
+        }
+    }
+    return valu;
+}
